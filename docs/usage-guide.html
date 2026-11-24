@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Ksheera prototype: usage guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* One typeface for the whole document: Manrope. Hierarchy comes from size and weight only. */
+  :root { --blue: #054aa9; --blue-soft: #e9f0fa; --ink: #1d2433; --muted: #5a6475; --rule: #d7deea; --gold: #ffcb73; --green: #23402d; }
+  @page { size: A4; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { font-family: "Manrope", Arial, sans-serif; color: var(--ink); font-size: 9.4pt; line-height: 1.45; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .page { padding: 0 18mm; }
+  h1 { font-size: 21pt; line-height: 1.15; color: var(--blue); margin: 0 0 1mm; font-weight: 800; letter-spacing: -0.01em; }
+  h2 { font-size: 12pt; color: var(--blue); margin: 5mm 0 2mm; padding-bottom: 1.2mm; border-bottom: 1.2px solid var(--blue); font-weight: 800; break-after: avoid; }
+  h3 { font-size: 9.8pt; margin: 3mm 0 1mm; font-weight: 700; break-after: avoid; }
+  p { margin: 0 0 2mm; }
+  .sub { font-size: 11pt; color: var(--muted); margin: 0; }
+  .meta { margin-top: 3mm; font-size: 9pt; color: var(--muted); }
+  .link { margin-top: 3.5mm; display: flex; align-items: center; gap: 5mm; border: 1.5px solid var(--blue); border-radius: 3mm; padding: 3mm 5mm; background: var(--blue-soft); }
+  .link .k { font-size: 8.5pt; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--blue); }
+  .link .u { font-size: 13pt; font-weight: 800; color: var(--ink); text-decoration: none; }
+  .link .n { font-size: 8.8pt; color: var(--muted); }
+  .brand { display: flex; gap: 4mm; align-items: center; margin-top: 3mm; padding: 2.8mm 4.5mm; border-radius: 3mm; background: #0e1525; color: #fbf8f1; }
+  .brand svg { height: 10mm; width: auto; flex: none; }
+  .brand .name { font-size: 14pt; font-weight: 800; }
+  .brand .tag { font-size: 9.5pt; color: #f3d58c; }
+  .brand .small { font-size: 8.5pt; color: rgba(251,248,241,0.7); }
+  table { width: 100%; border-collapse: collapse; margin: 1mm 0 1.5mm; font-size: 8.6pt; break-inside: auto; }
+  tr { break-inside: avoid; }
+  th { background: var(--blue-soft); color: var(--ink); text-align: left; font-weight: 700; padding: 1.5mm 2.2mm; border: 1px solid var(--rule); }
+  td { padding: 1.3mm 2.2mm; border: 1px solid var(--rule); vertical-align: top; }
+  td.b { font-weight: 700; white-space: nowrap; }
+  .tip { font-size: 8.8pt; color: var(--muted); margin-top: 1mm; }
+  .cols { columns: 2; column-gap: 7mm; }
+  .cols .q { break-inside: avoid; }
+  .q { break-inside: auto; }
+  .q h3 { margin-top: 2mm; color: var(--green); }
+  ul.qs { list-style: none; padding: 0; margin: 0; }
+  ul.qs li { padding: 0.6mm 0 0.6mm 4mm; position: relative; font-size: 8.9pt; }
+  ul.qs li::before { content: ""; position: absolute; left: 0; top: 2.1mm; width: 1.6mm; height: 1.6mm; border-radius: 50%; background: var(--gold); }
+  ol.steps { margin: 0; padding-left: 5mm; }
+  ol.steps li { margin-bottom: 1mm; padding-left: 1mm; }
+  .pill { display: inline-block; font-size: 7.8pt; font-weight: 700; padding: 0.4mm 2mm; border-radius: 10mm; background: #fff2d6; color: #87620f; vertical-align: 1px; }
+  .keep { break-inside: avoid; }
+  .pb { break-before: page; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <h1>Ksheera: AI-Powered Milk Delivery</h1>
+  <p class="sub">Prototype usage guide · Final year B.E. / B.Tech. project · Student: Sharmila</p>
+  <p class="meta">Prepared by DataNerdz.AI · {{DATE}}</p>
+
+  <div class="link">
+    <div>
+      <div class="k">Live prototype</div>
+      <a class="u" href="{{URL}}">{{URL_SHORT}}</a>
+      <div class="n">Opens on laptop and phone. Use Chrome or Edge for voice features (allow the microphone when asked).</div>
+    </div>
+  </div>
+
+  <div class="brand">
+    <svg viewBox="0 0 32 40" aria-hidden="true"><path d="M16 1.5C16 1.5 3.5 16.6 3.5 26.2a12.5 12.5 0 0 0 25 0C28.5 16.6 16 1.5 16 1.5Z" fill="#fbf8f1"/><path d="M10 29.5a6 6 0 0 1 12 0Z" fill="#e8b84a"/><path d="M5.2 29.5h21.6" stroke="#e8b84a" stroke-width="1.1"/><path d="M7.5 33.2h17M10.5 36.3h11" stroke="#e8b84a" stroke-width="0.9" opacity="0.55"/></svg>
+    <div>
+      <div class="name">Ksheera <span class="tag">· Milked at four. At your door by six.</span></div>
+      <div class="small">The demo brand: a dairy farm near Kanchipuram delivering A2 milk, curd, paneer and ghee across Chennai before sunrise. Ksheera means milk in Sanskrit. Name, phone and email can be changed in one file.</div>
+    </div>
+  </div>
+
+  <p style="margin-top:3mm">A working, clickable prototype of the milk delivery website with three sides: <b>customers</b> (shop, subscribe, track), the <b>admin</b> (dashboard and analytics) and <b>delivery partners</b> (route and deliveries). Sample data is preloaded. <b>AI is not connected:</b> every AI feature runs on sample rules in code and is labelled <span class="pill">demo</span> on screen, so the panel sees exactly how it will work.</p>
+
+  <h2>1. Sign in</h2>
+  <table>
+    <tr><th>Role</th><th>Email</th><th>Password</th><th>Opens</th></tr>
+    <tr><td class="b">Customer</td><td>priya@example.com</td><td>demo123</td><td>My account: orders, subscriptions, tracking</td></tr>
+    <tr><td class="b">Admin</td><td>admin@ksheera.example</td><td>admin123</td><td>Admin dashboard ({{URL_SHORT}}/admin)</td></tr>
+    <tr><td class="b">Delivery partner</td><td>ravi@ksheera.example</td><td>delivery123</td><td>Delivery app ({{URL_SHORT}}/delivery)</td></tr>
+  </table>
+  <p class="tip">Shortcut: every protected page has a one-tap “Continue as demo…” button, and the Sign in page has a “Fill” button per role. One-time code for password reset and the unusual sign-in check: 482913.</p>
+
+  <h2>2. Screens to show</h2>
+  <table>
+    <thead><tr><th style="width:20%">Screen</th><th style="width:15%">Where</th><th>What to show</th></tr></thead>
+    <tr><td class="b">Home story</td><td>/</td><td>Scroll slowly: the sky goes from 4:00 AM night to 6:15 AM sunrise and the milk drops form a cow, can, 4°C, flask, bottle, route and glass</td></tr>
+    <tr><td class="b">Shop and product</td><td>/shop</td><td>Search (try “thayir” or “nei”), filters, product details, reviews with AI sentiment</td></tr>
+    <tr><td class="b">Cart and checkout</td><td>/cart, /checkout</td><td>AI “people also add” suggestions; pay by UPI, card or cash on delivery (demo)</td></tr>
+    <tr><td class="b">Subscriptions</td><td>/subscribe</td><td>Daily, alternate days, chosen weekdays or monthly; AI estimate of how much milk the family needs</td></tr>
+    <tr><td class="b">My account</td><td>/account</td><td>Tracking with arrival time, invoices (print or save as PDF), pause / skip / change quantity, “your usual” basket</td></tr>
+    <tr><td class="b">Admin dashboard</td><td>/admin</td><td>Ask your data, sales charts, products, inventory with expiry, orders, customers, delivery staff, AI insights</td></tr>
+    <tr><td class="b">Delivery app</td><td>/delivery</td><td>Today's stops on a map in the optimised order; mark each one delivered</td></tr>
+    <tr><td class="b">Project overview</td><td>/project</td><td>Problem, existing vs proposed system, modules, architecture: built for the review panel</td></tr>
+  </table>
+
+  <h2>3. Where AI helps</h2>
+  <table>
+    <thead><tr><th style="width:20%">AI feature</th><th style="width:27%">Where</th><th>Try this</th></tr></thead>
+    <tr><td class="b">Chat assistant</td><td>“Ask Ksheera” button, every page</td><td>“When will my milk arrive?” Tap “Show how it matched” to see the intent and confidence</td></tr>
+    <tr><td class="b">Voice ordering</td><td>“Say your order” on home, header mic, shop</td><td>Say “Rendu litre paal and oru thayir”: it becomes 2 litres of A2 milk and a curd, ready to check out</td></tr>
+    <tr><td class="b">Order by chat</td><td>Chat assistant</td><td>“Add 2 litres of A2 milk and a paneer”, then tap Add to cart</td></tr>
+    <tr><td class="b">Ask about a product</td><td>Any product page</td><td>“Is it good for kids?”, “How long does it last?”</td></tr>
+    <tr><td class="b">Recommendations</td><td>Home, product page, cart, account</td><td>Put curd in the cart and see buttermilk suggested, with the reason</td></tr>
+    <tr><td class="b">Your usual basket</td><td>Home and My account (signed in)</td><td>Tomorrow's likely order, added in one tap</td></tr>
+    <tr><td class="b">Arrival time</td><td>Order tracking, My account</td><td>“Arriving around 6:12 AM”, worked out from the delivery route</td></tr>
+    <tr><td class="b">Demand forecast</td><td>Admin → AI insights, Inventory</td><td>14-day milk forecast with range, and how much milk to collect tomorrow</td></tr>
+    <tr><td class="b">Ask your data</td><td>Admin overview (top)</td><td>“Which product sells the most?” Answer plus the database query it would run</td></tr>
+    <tr><td class="b">Route optimisation</td><td>Delivery app</td><td>Shorter loop than booking order; tick “Show booking order” to compare</td></tr>
+    <tr><td class="b">Watchful flags</td><td>Admin → AI insights, Orders</td><td>Review sentiment, unusual milk quality readings, suspicious sign-ins and payments (held for a person, never auto-rejected)</td></tr>
+    <tr><td class="b">Small helpers</td><td>Across the site</td><td>Voice search, substitutes when out of stock, “Write with AI” product descriptions, hot-day stock tip, reminders timed to the customer's habit, customers ordering less</td></tr>
+  </table>
+
+  <h2>4. Questions to ask the assistant</h2>
+  <div class="cols">
+    <div class="q"><h3>Order in plain words</h3><ul class="qs">
+      <li>Add 2 litres of A2 milk and a paneer</li>
+      <li>Send half litre buffalo milk and 1 kg curd tomorrow</li>
+      <li>1.5 litres of toned milk every day</li>
+    </ul></div>
+    <div class="q"><h3>Delivery and orders</h3><ul class="qs">
+      <li>When will my milk arrive?</li>
+      <li>Do you deliver to Velachery?</li>
+      <li>Track my order</li>
+      <li>What's the last time to order for tomorrow?</li>
+    </ul></div>
+    <div class="q"><h3>Products</h3><ul class="qs">
+      <li>What is A2 milk?</li>
+      <li>How much is a litre of milk?</li>
+      <li>How long does ghee last?</li>
+      <li>Is buffalo milk good for kids?</li>
+      <li>What can I make with paneer?</li>
+      <li>Is your milk adulterated?</li>
+    </ul></div>
+    <div class="q"><h3>Subscriptions, payment, support</h3><ul class="qs">
+      <li>How do I pause my subscription?</li>
+      <li>Which payment methods do you accept?</li>
+      <li>Do I need to return the glass bottles?</li>
+      <li>My milk was sour <span class="pill">hands over to a person</span></li>
+    </ul></div>
+  </div>
+  <p class="tip">Anything else gets a polite “demo mode” reply. All sample questions are also one tap away on the /project page.</p>
+
+  <div class="cols" style="margin-top:2mm">
+    <div class="q"><h3>Say to “Say your order”</h3><ul class="qs">
+      <li>Two litres of A2 milk and one paneer</li>
+      <li>Half litre buffalo milk, 1 kg curd and a ghee for Sunday</li>
+      <li>Four buttermilk and a mango lassi in the evening</li>
+    </ul></div>
+    <div class="q"><h3>Ask the admin dashboard</h3><ul class="qs">
+      <li>What was revenue last week?</li>
+      <li>How much milk do we need tomorrow?</li>
+      <li>What are customers complaining about?</li>
+      <li>Which batches failed quality checks?</li>
+    </ul></div>
+  </div>
+
+  <h2>5. A five-minute demo</h2>
+  <ol class="steps">
+    <li>Open the link and scroll the home story from night to sunrise.</li>
+    <li>Tap <b>Say your order</b>, choose “Rendu litre paal and oru thayir”, then <b>Add and check out</b> → <b>Continue as demo customer</b> → <b>Pay</b>.</li>
+    <li>On the confirmation, show the tracking steps, the arrival time and the <b>Invoice</b>.</li>
+    <li>Open <b>Ask Ksheera</b>: ask “How long does ghee last?”, then “My milk was sour”.</li>
+    <li>Go to <b>/admin</b> → Continue as demo admin → ask “Which product sells the most?” → open <b>AI insights</b> (forecast, sentiment, quality) → <b>Orders</b> to approve a held payment.</li>
+    <li>Go to <b>/delivery</b> → Continue as demo delivery partner → show the route map and mark a stop delivered.</li>
+  </ol>
+
+  <h2>6. Good to know</h2>
+  <table>
+    <tr><td class="b">AI</td><td>Simulated for the prototype and marked “demo”. The code notes which model replaces each feature in the full system (Python, Pandas, Scikit-learn, an NLP model or AI API).</td></tr>
+    <tr><td class="b">Data</td><td>Sample customers, 75 days of orders, reviews and lab readings, kept in each visitor's browser (Admin → “Reset demo data” restores it). Payments are demo only; test card 4111 1111 1111 1111.</td></tr>
+    <tr><td class="b">Built with</td><td>Next.js, React and Tailwind CSS on Vercel; planned production stack Flask and MySQL, as in the synopsis. Photos are stock placeholders.</td></tr>
+  </table>
+
+</div>
+</body>
+</html>
