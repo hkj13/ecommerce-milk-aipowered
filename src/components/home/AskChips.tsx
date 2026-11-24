@@ -2,11 +2,14 @@
 
 import { openChat } from "@/components/chat/ChatWidget";
 import { SparkIcon } from "@/components/ui/icons";
-import { INTENTS } from "@/lib/chat";
+import { INTENTS, SMART_EXAMPLES } from "@/lib/chat";
 
 /** Every sample question the demo assistant understands, as one-tap buttons. */
 export function AskChips() {
-  const qs = INTENTS.flatMap((i) => i.examples.map((e) => ({ q: e, id: i.id }))).filter((x) => x.q.length > 6);
+  const qs = [
+    ...SMART_EXAMPLES.map((q) => ({ q, id: "order or product question" })),
+    ...INTENTS.flatMap((i) => i.examples.map((e) => ({ q: e, id: i.id }))).filter((x) => x.q.length > 6),
+  ];
   return (
     <ul className="flex flex-wrap gap-2">
       {qs.map((x) => (

@@ -2,6 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
+import { AskData } from "@/components/ai/AskData";
 import { BarList, ColumnChart } from "@/components/charts/Charts";
 import { AdminCatalog, AdminInventory } from "@/components/admin/AdminCatalog";
 import { AdminInsights } from "@/components/admin/AdminInsights";
@@ -11,6 +12,7 @@ import { AiBadge, StatusPill } from "@/components/ui/bits";
 import { AlertIcon, BoxIcon, ChartIcon, GridIcon, RepeatIcon, ShieldIcon, SparkIcon, TruckIcon, UsersIcon } from "@/components/ui/icons";
 import { CATEGORIES } from "@/data/products";
 import { behaviourInsights, forecastDemand, loginFlags, qualityFlags } from "@/lib/ai";
+import { weatherNudge } from "@/lib/ai-plus";
 import { addDays, cls, money, today, ymd } from "@/lib/format";
 import { liveCatalogue, useDB, useSession } from "@/lib/store";
 
@@ -124,6 +126,8 @@ function Overview({ go }: { go: (t: string) => void }) {
         <AiBadge>Sample data</AiBadge>
       </TopBar>
 
+      <AskData />
+
       <div className="grid grid-cols-2 gap-4 xl:grid-cols-5">
         <Tile
           label={`Revenue, last ${range} days`}
@@ -157,6 +161,7 @@ function Overview({ go }: { go: (t: string) => void }) {
             <Insight tone={lFlags.length ? "warn" : "ok"} title={`${lFlags.length} unusual sign-ins, ${db.orders.filter((o) => o.payment.status === "review").length} payments held`} body="Flags for a person to review. Nothing is blocked automatically." onClick={() => go("insights")} />
             <Insight tone="info" title={`${quiet.length} customers ordering less`} body={quiet.map((q) => q.user.name).join(", ") || "No drop-offs this fortnight."} onClick={() => go("customers")} />
             <Insight tone="info" title="Routes optimised overnight" body="Today's three routes were re-ordered by the route planner. See the delivery staff tab." onClick={() => go("delivery")} />
+            <Insight tone="warn" title={`Hot day tomorrow: ${weatherNudge().temp}°C`} body={weatherNudge().text} onClick={() => go("inventory")} />
           </ul>
         </Panel>
         <Panel title="Deliveries right now" action={<StatusPill status="out_for_delivery" />}>

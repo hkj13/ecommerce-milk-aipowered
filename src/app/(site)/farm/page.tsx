@@ -68,8 +68,7 @@ export default function FarmPage() {
             </div>
             <div className={`col-span-4 md:col-span-4 xl:col-span-5 ${i % 2 ? "md:order-1 xl:col-start-1" : "xl:col-start-8"}`}>
               <p className="mono-label flex items-center gap-3 text-butter-ink">
-                <span className="font-display text-4xl tracking-normal text-pasture [font-variation-settings:'opsz'_96,'SOFT'_100]">{String(i + 1).padStart(2, "0")}</span>
-                {c.time} AM · {c.label}
+                {String(i + 1).padStart(2, "0")} · {c.time} AM · {c.label}
               </p>
               <h2 data-reveal className="display-l mt-5">
                 {c.headline} <em className="display-em text-pasture">{c.em}</em>

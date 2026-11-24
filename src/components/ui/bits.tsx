@@ -73,9 +73,15 @@ export function Stepper({
 }
 
 /** The marker on anything powered by the (simulated) AI. */
-export function AiBadge({ children = "AI demo", className = "" }: { children?: React.ReactNode; className?: string }) {
+export function AiBadge({ children = "AI demo", className = "", dark = false }: { children?: React.ReactNode; className?: string; dark?: boolean }) {
   return (
-    <span className={cls("inline-flex items-center gap-1.5 rounded-full border border-butter/50 bg-butter/10 px-3 py-1 text-[0.74rem] font-semibold text-butter-ink", className)}>
+    <span
+      className={cls(
+        "inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-[0.74rem] font-semibold",
+        dark ? "border-butter/40 bg-butter/10 text-butter" : "border-butter/50 bg-butter/10 text-butter-ink",
+        className,
+      )}
+    >
       <SparkIcon size={13} /> {children}
     </span>
   );

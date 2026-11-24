@@ -7,8 +7,10 @@ import { ProductThumb } from "@/components/shop/ProductArt";
 import { toast } from "@/components/ui/Toaster";
 import { CloseIcon, InfoIcon, MicIcon, PlusIcon, SendIcon, SparkIcon } from "@/components/ui/icons";
 import { addToCart } from "@/lib/actions";
+import { useRouter } from "next/navigation";
+import { RepeatIcon } from "@/components/ui/icons";
 import { STARTER_QUESTIONS, reply, type ChatAnswer, type Match } from "@/lib/chat";
-import { cls, money } from "@/lib/format";
+import { cls, money, relDay } from "@/lib/format";
 import { getDB, useCatalogue, useSession } from "@/lib/store";
 import { useSpeech } from "@/components/shop/useSpeech";
 
@@ -28,6 +30,8 @@ export function ChatWidget() {
   const list = useRef<HTMLDivElement>(null);
   const idRef = useRef(1);
   const { user } = useSession();
+  const router = useRouter();
+  const [added, setAdded] = useState<number[]>([]);
   const catalogue = useCatalogue();
   const speech = useSpeech((text) => {
     setInput(text);
@@ -154,6 +158,57 @@ export function ChatWidget() {
                 {m.text && (
                   <div className="rounded-[18px] rounded-bl-md bg-cream px-4 py-3 text-[0.92rem] leading-relaxed text-ink">
                     {m.text.split("\n").map((line, i) => (line ? <p key={i}>{line}</p> : <div key={i} className="h-2" />))}
+                  </div>
+                )}
+                {m.answer?.order && m.answer.order.lines.length > 0 && (
+                  <div className="mt-2 rounded-2xl border border-rule bg-white/80 p-3">
+                    <ul className="space-y-1.5 text-sm">
+                      {m.answer.order.lines.map((l) => (
+                        <li key={l.slug + l.variant} className="flex justify-between gap-3">
+                          <span>
+                            {l.qty} × {l.name} <span className="text-ink-3">({l.label})</span>
+                          </span>
+                          <span className="font-semibold tabular-nums">{money(l.price * l.qty)}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    <p className="mt-2 border-t border-rule pt-2 text-xs text-ink-3">
+                      Delivery {relDay(m.answer.order.day).toLowerCase()}, {m.answer.order.slot === "morning" ? "5:30 to 7:30 AM" : "5 to 7 PM"}
+                    </p>
+                    {added.includes(m.id) ? (
+                      <p className="mt-2 text-sm font-semibold text-ok">Added to your cart ✓</p>
+                    ) : (
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        <button
+                          type="button"
+                          className="btn btn-primary btn-sm"
+                          onClick={() => {
+                            m.answer!.order!.lines.forEach((l) => addToCart(l.slug, l.variant, l.qty));
+                            setAdded((a) => [...a, m.id]);
+                            toast("Added to cart from chat");
+                          }}
+                        >
+                          Add to cart
+                        </button>
+                        <button
+                          type="button"
+                          className="btn btn-ghost btn-sm"
+                          onClick={() => {
+                            m.answer!.order!.lines.forEach((l) => addToCart(l.slug, l.variant, l.qty));
+                            setAdded((a) => [...a, m.id]);
+                            setOpen(false);
+                            router.push("/checkout");
+                          }}
+                        >
+                          Add and check out
+                        </button>
+                      </div>
+                    )}
+                    {m.answer.order.subscribe && (
+                      <Link href={`/subscribe?product=${m.answer.order.subscribe.slug}${m.answer.order.subscribe.litres ? `&litres=${m.answer.order.subscribe.litres}` : ""}`} onClick={() => setOpen(false)} className="mt-2 flex items-center gap-1.5 text-xs font-semibold text-butter-ink">
+                        <RepeatIcon size={13} /> Make it a {m.answer.order.subscribe.frequency} subscription instead →
+                      </Link>
+                    )}
                   </div>
                 )}
                 {m.answer?.products && m.answer.products.length > 0 && (

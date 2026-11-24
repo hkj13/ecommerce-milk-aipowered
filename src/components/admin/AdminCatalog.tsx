@@ -8,6 +8,8 @@ import { AiBadge } from "@/components/ui/bits";
 import { PlusIcon, TrashIcon } from "@/components/ui/icons";
 import { CATEGORIES, categoryLabel, type CategoryId, type Product } from "@/data/products";
 import { forecastDemand, procurementPlan } from "@/lib/ai";
+import { writeDescription } from "@/lib/ai-plus";
+import { SparkIcon } from "@/components/ui/icons";
 import { addProduct, removeProduct, updateProduct } from "@/lib/actions";
 import { addDays, cls, fmtDate, money } from "@/lib/format";
 import { liveCatalogue, useDB } from "@/lib/store";
@@ -124,7 +126,7 @@ export function AdminCatalog() {
 }
 
 function AddProduct({ onDone }: { onDone: () => void }) {
-  const [f, setF] = useState({ name: "", short: "", category: "milk" as CategoryId, label: "500 ml bottle", price: 50, stock: 50, photo: PHOTOS[0], subscribable: false });
+  const [f, setF] = useState({ name: "", short: "", description: "", category: "milk" as CategoryId, label: "500 ml bottle", price: 50, stock: 50, photo: PHOTOS[0], subscribable: false });
   return (
     <Panel title="New product" className="mb-4">
       <form
@@ -137,7 +139,7 @@ function AddProduct({ onDone }: { onDone: () => void }) {
             slug,
             name: f.name.trim(),
             short: f.short.trim() || "New on the menu.",
-            description: f.short.trim() || "Freshly added by the dairy team.",
+            description: f.description.trim() || f.short.trim() || "Freshly added by the dairy team.",
             category: f.category,
             photo: `/photos/${f.photo}.jpg`,
             variants: [{ id: "std", label: f.label, price: f.price }],
@@ -177,8 +179,22 @@ function AddProduct({ onDone }: { onDone: () => void }) {
           <input className="field" value={f.label} onChange={(e) => setF({ ...f, label: e.target.value })} />
         </label>
         <label className="md:col-span-2">
-          <span className="mb-1.5 block text-sm font-medium text-ink-2">One-line description</span>
+          <span className="mb-1.5 flex items-center justify-between gap-2 text-sm font-medium text-ink-2">
+            One-line description
+            <button
+              type="button"
+              onClick={() => {
+                const d = writeDescription(f.name, f.category);
+                setF({ ...f, short: d.short, description: d.description });
+                toast("Description drafted", "Review it before saving (AI demo)");
+              }}
+              className="chip border border-butter/50 bg-butter/10 py-1 text-[0.72rem] text-butter-ink"
+            >
+              <SparkIcon size={12} /> Write with AI
+            </button>
+          </span>
           <input className="field" value={f.short} onChange={(e) => setF({ ...f, short: e.target.value })} />
+          {f.description && <textarea className="field mt-2 min-h-20 text-sm" value={f.description} onChange={(e) => setF({ ...f, description: e.target.value })} aria-label="Full description" />}
         </label>
         <div className="grid grid-cols-2 gap-3">
           <label>

@@ -8,6 +8,7 @@ import { toast } from "@/components/ui/Toaster";
 import { Empty, Skeleton, StatusPill } from "@/components/ui/bits";
 import { CheckIcon, DownloadIcon, PhoneIcon, PinIcon, ShieldIcon, TruckIcon } from "@/components/ui/icons";
 import { HUB } from "@/data/seed";
+import { eta } from "@/lib/ai-plus";
 import { optimiseRoute } from "@/lib/ai";
 import { cancelOrder } from "@/lib/actions";
 import { cls, fmtDateTime, fmtTime, money, relDay } from "@/lib/format";
@@ -88,6 +89,11 @@ export function OrderView() {
             <p className="mt-2 text-ink-2">
               Placed {fmtDateTime(o.placedAt)} · Delivery {relDay(o.deliveryDate)}, {o.slot === "morning" ? "5:30 to 7:30 AM" : "5 to 7 PM"}
             </p>
+            {db && eta(o, db) && (
+              <p className="mt-4 inline-flex items-center gap-2 rounded-full bg-butter/15 px-3.5 py-2 text-sm font-semibold text-butter-ink">
+                <TruckIcon size={16} /> Expected around {eta(o, db)!.label} {relDay(o.deliveryDate).toLowerCase()} · AI ETA from the optimised route
+              </p>
+            )}
 
             {o.status !== "cancelled" ? (
               <ol className="card mt-8 p-6 md:p-8">

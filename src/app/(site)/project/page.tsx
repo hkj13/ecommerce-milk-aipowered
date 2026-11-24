@@ -32,6 +32,15 @@ const MODULES: { n: string; title: string; body: string; href: string; ai?: bool
 ];
 
 const EXTRA_AI = [
+  ["Voice ordering", "Say “two litres of A2 milk and a paneer” (English, Tamil or Hindi numbers) and it goes into the cart.", "/shop"],
+  ["Ask about a product", "Doubts like “Is it good for kids?” or “How long does it last?” answered on every product page.", "/shop/a2-bilona-ghee"],
+  ["Order from the chatbot", "Type an order into the assistant; it shows what it understood and adds it on one tap.", "/?chat=1"],
+  ["Your usual basket", "Tomorrow's likely basket predicted from past orders, added in one tap.", "/account"],
+  ["Arrival time estimate", "Each order shows when it should reach the door, from its place on the optimised route.", "/account?tab=orders"],
+  ["Ask your data (admin)", "The owner asks “Which product sells the most?” and gets the answer with the query it would run.", "/admin"],
+  ["Smart substitutes", "Out of stock? The closest in-stock alternative is suggested.", "/shop/farmhouse-cheese"],
+  ["Write with AI (admin)", "Drafts a product description when adding a new product.", "/admin?tab=products"],
+  ["Weather-aware stock", "A hot-day forecast nudges extra buttermilk and lassi (simulated weather).", "/admin"],
   ["Delivery route optimisation", "Nearest-neighbour plus 2-opt on stop coordinates: shorter loops each morning.", "/delivery"],
   ["Review sentiment analysis", "Every review classified positive, neutral or negative, with the most common issues summarised.", "/admin?tab=insights"],
   ["Milk quality monitoring", "Lab readings checked against limits; unusual batches flagged for physical re-test.", "/admin?tab=insights"],
@@ -174,7 +183,7 @@ export default function ProjectPage() {
             ))}
           </div>
 
-          <h3 className="display-m mt-20">Also in the prototype, from the features document</h3>
+          <h3 className="display-m mt-20">More AI in the prototype</h3>
           <ul className="mt-8 grid gap-[var(--gutter)] md:grid-cols-2 xl:grid-cols-3">
             {EXTRA_AI.map(([t, d, href]) => (
               <li key={t}>

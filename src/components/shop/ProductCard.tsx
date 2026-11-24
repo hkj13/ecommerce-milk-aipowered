@@ -6,7 +6,8 @@ import { toast } from "@/components/ui/Toaster";
 import { PlusIcon, RepeatIcon, StarIcon } from "@/components/ui/icons";
 import { addToCart } from "@/lib/actions";
 import { cls, money } from "@/lib/format";
-import type { LiveProduct } from "@/lib/store";
+import { substituteFor } from "@/lib/ai-plus";
+import { useCatalogue, type LiveProduct } from "@/lib/store";
 
 export function stockState(p: { stock: number }) {
   if (p.stock <= 0) return { label: "Back tomorrow", tone: "out" as const };
@@ -28,6 +29,8 @@ export function ProductCard({
   const v = p.variants[0];
   const stock = stockState(p);
   const out = stock.tone === "out";
+  const all = useCatalogue();
+  const alt = out ? substituteFor(p.slug, all) : undefined;
   return (
     <article className="group relative flex h-full flex-col">
       <Link
@@ -75,6 +78,10 @@ export function ProductCard({
         </div>
         {reason ? (
           <p className="mt-1.5 text-[0.85rem] font-medium leading-snug text-pasture">{reason}</p>
+        ) : alt ? (
+          <Link href={`/shop/${alt.slug}`} className="mt-1.5 block text-[0.85rem] font-medium leading-snug text-butter-ink">
+            AI suggests: try {alt.name} today →
+          </Link>
         ) : (
           size === "md" && <p className="mt-1.5 line-clamp-2 text-[0.92rem] leading-snug text-ink-2">{p.short}</p>
         )}

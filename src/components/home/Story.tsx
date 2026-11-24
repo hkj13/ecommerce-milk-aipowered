@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
+import { VoiceOrderButton } from "@/components/ai/VoiceOrder";
 import { ArrowRight, SparkIcon } from "@/components/ui/icons";
 import { cls } from "@/lib/format";
 import { CHAPTERS } from "./chapters";
@@ -422,12 +423,10 @@ export function Story() {
                     <Link href="/subscribe" className="btn btn-butter" data-cursor="Start">
                       Start a subscription <ArrowRight size={18} />
                     </Link>
+                    <VoiceOrderButton className="btn btn-ghost text-milk" />
                     <Link href="/shop" className="btn btn-ghost text-milk" data-cursor="Shop">
                       Shop dairy
                     </Link>
-                    <a href="#menu" className="mono-label ml-2 hidden text-milk/60 underline-offset-4 hover:underline sm:inline">
-                      Skip the story ↓
-                    </a>
                   </div>
                 )}
 

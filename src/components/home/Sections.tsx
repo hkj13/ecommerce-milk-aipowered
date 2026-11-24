@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useMemo, useRef, useState } from "react";
 import { Sparkline } from "@/components/charts/Charts";
 import { openChat } from "@/components/chat/ChatWidget";
+import { UsualBasket } from "@/components/ai/UsualBasket";
+import { VoiceOrderButton } from "@/components/ai/VoiceOrder";
 import { ProductCard } from "@/components/shop/ProductCard";
 import { ArrowLeft, ArrowRight, CheckIcon, MinusIcon, PlusIcon, SparkIcon, StarIcon } from "@/components/ui/icons";
 import { site } from "@/config/site";
@@ -104,11 +106,14 @@ export function ForYou() {
             <SparkIcon size={14} /> Recommendations from your order history · demo
           </p>
         </div>
-        <div className="mt-10 grid grid-cols-2 gap-[var(--gutter)] lg:grid-cols-4">
-          {recs.map((r) => {
-            const p = all.find((x) => x.slug === r.slug);
-            return p ? <ProductCard key={r.slug} product={p} reason={r.reason} size="sm" /> : null;
-          })}
+        <div className="mt-10 grid gap-[var(--gutter)] lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
+          <UsualBasket userId={user.id} className="self-start" />
+          <div className="grid grid-cols-2 gap-[var(--gutter)] lg:grid-cols-3">
+            {recs.slice(0, 3).map((r) => {
+              const p = all.find((x) => x.slug === r.slug);
+              return p ? <ProductCard key={r.slug} product={p} reason={r.reason} size="sm" /> : null;
+            })}
+          </div>
         </div>
       </div>
     </section>
@@ -244,8 +249,8 @@ export function PlansSection() {
                     </button>
                   </div>
                 ))}
-                <p className="ml-auto font-display text-3xl">
-                  {est} L<span className="ml-1 font-sans text-sm text-ink-2">a day</span>
+                <p className="ml-auto text-2xl font-semibold tabular-nums">
+                  {est} L <span className="text-sm font-normal text-ink-2">a day</span>
                 </p>
               </div>
               <p className="mt-2 text-xs text-ink-3">Signed-in customers get this from their own order history instead.</p>
@@ -350,7 +355,7 @@ export function AISection() {
           </div>
           <div className="col-span-4 self-end md:col-span-8 xl:col-span-4 xl:col-start-9">
             <p data-reveal className="text-milk/70">
-              Six features from the project brief, working end to end on sample data. In this prototype the AI is simulated in
+              Nine AI features, working end to end on sample data. In this prototype the AI is simulated in
               code so every screen can be demonstrated; the comments in <code className="text-butter">src/lib/ai.ts</code> say
               which model replaces each one.
             </p>
@@ -457,6 +462,41 @@ export function AISection() {
             </ul>
             <Link href="/admin?tab=insights" className="mono-label mt-auto pt-6 text-butter link-draw w-fit">
               See the admin AI dashboard →
+            </Link>
+          </article>
+
+          {/* voice ordering */}
+          <article data-reveal className={card}>
+            <p className="mono-label text-butter">07 · Voice ordering</p>
+            <h3 className="h3 mt-3">Say it. It&apos;s in the cart.</h3>
+            <p className="mt-5 rounded-2xl bg-white/[0.06] px-4 py-3 text-milk/85">“Rendu litre paal and oru thayir”</p>
+            <p className="mt-2 text-sm text-milk/65">→ 2 × A2 milk (1 L) and 1 × clay pot curd, ready to check out. English, Tamil and Hindi number words.</p>
+            <div className="mt-auto pt-6">
+              <VoiceOrderButton className="btn btn-butter btn-sm" label="Try voice ordering" />
+            </div>
+          </article>
+
+          {/* product Q&A */}
+          <article data-reveal className={card}>
+            <p className="mono-label text-butter">08 · Ask about a product</p>
+            <h3 className="h3 mt-3">Doubts answered on the product page.</h3>
+            <div className="mt-6 space-y-2 text-[0.85rem]">
+              <p className="ml-auto w-fit max-w-[85%] rounded-2xl rounded-br-md bg-pasture px-3.5 py-2">Is the ghee lactose free?</p>
+              <p className="w-fit max-w-[92%] rounded-2xl rounded-bl-md bg-white/10 px-3.5 py-2 text-milk/85">Ghee is almost entirely fat, so it has only traces of lactose…</p>
+            </div>
+            <Link href="/shop/a2-bilona-ghee#ask-title" className="mono-label link-draw mt-auto w-fit pt-6 text-butter">
+              Ask a question →
+            </Link>
+          </article>
+
+          {/* ask your data */}
+          <article data-reveal className={card}>
+            <p className="mono-label text-butter">09 · Ask your data</p>
+            <h3 className="h3 mt-3">The owner asks in plain English.</h3>
+            <p className="mt-5 rounded-2xl bg-white/[0.06] px-4 py-3 text-milk/85">“Which product sells the most?”</p>
+            <p className="mt-2 text-sm text-milk/65">Answered from orders, with the query it would run against MySQL shown underneath.</p>
+            <Link href="/admin" className="mono-label link-draw mt-auto w-fit pt-6 text-butter">
+              Open the admin dashboard →
             </Link>
           </article>
         </div>

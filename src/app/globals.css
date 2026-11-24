@@ -195,9 +195,9 @@ html.lenis body {
   text-transform: uppercase;
 }
 
+/* Accent words in headlines: same face, same style, colour only. */
 .display-em {
-  font-style: italic;
-  font-variation-settings: "opsz" 144, "SOFT" 100, "WONK" 1;
+  font-style: normal;
 }
 
 /* ------------------------------------------------------------------ */

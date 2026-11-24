@@ -4,7 +4,8 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Logo } from "@/components/brand/Logo";
-import { CartIcon, CloseIcon, LogoutIcon, MenuIcon, UserIcon } from "@/components/ui/icons";
+import { openVoiceOrder } from "@/components/ai/VoiceOrder";
+import { CartIcon, CloseIcon, LogoutIcon, MenuIcon, MicIcon, UserIcon } from "@/components/ui/icons";
 import { mainNav, site } from "@/config/site";
 import { logout } from "@/lib/actions";
 import { cls, initials } from "@/lib/format";
@@ -116,6 +117,15 @@ export function Header() {
           </nav>
 
           <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => openVoiceOrder()}
+              aria-label="Order by voice (AI)"
+              title="Order by voice (AI)"
+              className="hidden h-11 items-center gap-2 rounded-full px-3 text-sm font-semibold transition-colors hover:bg-current/10 sm:flex"
+            >
+              <MicIcon size={19} /> <span className="hidden xl:inline">Order by voice</span>
+            </button>
             <Link
               href="/cart"
               aria-label={`Cart, ${count} item${count === 1 ? "" : "s"}`}
@@ -225,6 +235,16 @@ export function Header() {
             </Link>
           ))}
           <div className="mt-8 flex flex-wrap gap-3">
+            <button
+              type="button"
+              className="btn btn-ghost"
+              onClick={() => {
+                setOpen(false);
+                openVoiceOrder();
+              }}
+            >
+              <MicIcon size={18} /> Order by voice
+            </button>
             {user ? (
               <>
                 <Link href={portal?.href ?? "/account"} className="btn btn-butter">

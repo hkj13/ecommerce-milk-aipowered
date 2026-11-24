@@ -55,10 +55,22 @@ as demo …” button. Demo OTP for password reset and the unusual-sign-in check
 | 9.9 Delivery staff | `/delivery` | `components/admin/DeliveryView.tsx` |
 | Project overview for the panel | `/project` | `app/(site)/project/page.tsx` |
 
-Also from the features document: delivery route optimisation, review sentiment analysis, milk
-quality monitoring, unusual sign-in and payment flags, customer behaviour insights, personalised
-reminder timing, a milk-quantity estimate for subscriptions, inventory with expiry dates and
-reorder suggestions, and voice search (browser speech recognition; Chrome, Edge or Safari).
+More AI, all simulated and labelled “demo” (logic in `src/lib/ai.ts` and `src/lib/ai-plus.ts`):
+
+| Feature | Where to see it |
+| --- | --- |
+| Voice ordering: “two litres of A2 milk and a paneer” (English, Tamil, Hindi numbers) | “Say your order” on the home hero, header mic, shop |
+| Order from the chatbot, recipes, product doubts | “Ask Ksheera” button |
+| Ask about this product (“Is it good for kids?”) | Every product page |
+| Your usual basket, predicted, one tap to add | Home (signed in), My account |
+| Arrival time estimate from the optimised route | Order tracking, My account |
+| Ask your data: “Which product sells the most?” with the SQL it would run | Admin overview |
+| Smart substitutes when out of stock | Shop, product pages |
+| Write with AI (product descriptions) | Admin → Products → Add product |
+| Demand forecast, procurement plan, weather nudge | Admin → AI insights, Inventory, Overview |
+| Route optimisation | Delivery app |
+| Review sentiment, milk quality flags, unusual sign-in and payment flags, customers ordering less | Admin → AI insights, Orders, Customers |
+| Milk estimate for subscriptions, personalised reminder timing, voice search | Subscribe page, My account, shop search |
 
 ## The chatbot's sample questions
 

@@ -2,6 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
+import { VoiceOrderButton } from "@/components/ai/VoiceOrder";
 import { ProductCard } from "@/components/shop/ProductCard";
 import { useSpeech } from "@/components/shop/useSpeech";
 import { AiBadge, Empty, PageHead } from "@/components/ui/bits";
@@ -197,6 +198,16 @@ export function ShopView() {
           </label>
         </div>
       </div>
+
+      <section className="wrap pt-10">
+        <div className="on-dark flex flex-wrap items-center justify-between gap-5 rounded-[24px] bg-night px-6 py-5 text-milk md:px-8">
+          <div>
+            <p className="text-lg font-semibold">Know what you want? Just say it.</p>
+            <p className="text-sm text-milk/65">“Two litres of A2 milk and one paneer” goes straight into your cart. AI voice ordering, demo.</p>
+          </div>
+          <VoiceOrderButton className="btn btn-butter" />
+        </div>
+      </section>
 
       <section className="wrap py-12 md:py-16" aria-live="polite">
         <p className="mb-8 text-sm text-ink-3">

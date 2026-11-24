@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
+import { UsualBasket } from "@/components/ai/UsualBasket";
 import { SignInPrompt } from "@/components/account/SignInPrompt";
 import { ProductThumb } from "@/components/shop/ProductArt";
 import { ProductCard } from "@/components/shop/ProductCard";
@@ -10,6 +11,7 @@ import { toast } from "@/components/ui/Toaster";
 import { AiBadge, Empty, PageHead, Skeleton, StatusPill, Stepper } from "@/components/ui/bits";
 import { BellIcon, CalendarIcon, DownloadIcon, PauseIcon, PlayIcon, RepeatIcon, TruckIcon } from "@/components/ui/icons";
 import { milkEstimate, recommend, reminderTime } from "@/lib/ai";
+import { eta } from "@/lib/ai-plus";
 import {
   addToCart,
   deliversOn,
@@ -146,6 +148,11 @@ export function AccountView() {
               {live ? (
                 <div className="mt-5">
                   <OrderProgress status={live.status} />
+                  {db && eta(live, db) && (
+                    <p className="mt-4 inline-flex items-center gap-2 rounded-full bg-butter/15 px-3 py-1.5 text-sm font-semibold text-butter-ink">
+                      <TruckIcon size={16} /> Arriving around {eta(live, db)!.label} · AI estimate
+                    </p>
+                  )}
                   <p className="mt-4 text-sm text-ink-2">{live.lines.map((l) => `${l.qty} × ${l.name}`).join(", ")}</p>
                   <Link href={`/account/order?id=${live.id}`} className="btn btn-primary btn-sm mt-5">
                     Track order
@@ -204,6 +211,8 @@ export function AccountView() {
               </button>
             </section>
             <EstimateCard userId={user.id} />
+
+            <UsualBasket userId={user.id} className="lg:col-span-3" />
 
             <ForYouRow userId={user.id} />
           </div>

@@ -14,6 +14,7 @@
 import { site } from "@/config/site";
 import { liveCatalogue } from "@/lib/store";
 import { recommend } from "@/lib/ai";
+import { findProduct, parseOrder, productAnswer, type ParsedOrder } from "@/lib/ai-plus";
 import { fmtDay, money, relDay } from "@/lib/format";
 import type { DB, User } from "@/lib/types";
 
@@ -24,6 +25,7 @@ export type ChatAnswer = {
   products?: string[];
   chips?: string[];
   escalate?: boolean;
+  order?: ParsedOrder;
 };
 
 type Ctx = { db: DB | null; user: User | null; message: string };
@@ -264,6 +266,7 @@ export const INTENTS: Intent[] = [
 ];
 
 export const STARTER_QUESTIONS = [
+  "Add 2 litres of A2 milk and a paneer",
   "When will my milk arrive?",
   "What is A2 milk?",
   "How do I pause my subscription?",
@@ -272,8 +275,25 @@ export const STARTER_QUESTIONS = [
   "Which payment methods do you accept?",
   "Do you deliver to Velachery?",
   "Suggest something for me",
+  "What can I make with paneer?",
+  "How long does ghee last?",
+  "Is buffalo milk good for kids?",
   "My milk was sour",
 ];
+
+/** Questions the assistant handles beyond the fixed intents (ordering, recipes, product doubts). */
+export const SMART_EXAMPLES = [
+  "Add 2 litres of A2 milk and a paneer",
+  "Send half litre buffalo milk and 1 kg curd tomorrow",
+  "What can I make with paneer?",
+  "How long does ghee last?",
+  "Is buffalo milk good for kids?",
+  "Is curd lactose free?",
+];
+
+const ORDER_VERB = /\b(add|order|send|deliver|i want|i need|get me|buy|book|put|need)\b/;
+const QTY = /\b(\d+(\.\d+)?\s*(l|ml|kg|g|litres?|liters?)|one|two|three|four|five|half|a|an|oru|rendu|moonu)\b/;
+const QUESTION = /^(how|what|is|are|does|do|can|should|why|when|which|where)\b|\?\s*$/;
 
 const norm = (s: string) =>
   ` ${s
@@ -306,6 +326,35 @@ export function classify(message: string): Match {
 }
 
 export function reply(message: string, db: DB | null, user: User | null): { answer: ChatAnswer; match: Match } {
+  const m = message.toLowerCase().trim();
+  const cat = liveCatalogue(db);
+
+  // 1. "Add 2 litres of milk and a paneer": an order in plain words.
+  if (ORDER_VERB.test(m) || (QTY.test(m) && !QUESTION.test(m))) {
+    const parsed = parseOrder(message, cat);
+    if (parsed.lines.length && !QUESTION.test(m.replace(/^(can|could) you\b/, ""))) {
+      return {
+        match: { intent: "order", confidence: parsed.confidence, scores: [] },
+        answer: {
+          text: "Here's the order as I understood it. Tap Add to cart to confirm, or change anything in the cart.",
+          order: parsed,
+        },
+      };
+    }
+  }
+
+  // 2. A question about one product: answer from that product's data.
+  const product = findProduct(m, cat);
+  if (product && QUESTION.test(m)) {
+    const a = productAnswer(product, message);
+    if (a.topic !== "unknown" && a.topic !== "price") {
+      return {
+        match: { intent: `product_${a.topic.replace(/\s/g, "_")}`, confidence: 0.88, scores: [] },
+        answer: { text: `${product.name}: ${a.text}`, products: [product.slug] },
+      };
+    }
+  }
+
   const match = classify(message);
   const intent = INTENTS.find((i) => i.id === match.intent);
   if (!intent) {

@@ -1,3 +1,4 @@
+import { VoiceOrder } from "@/components/ai/VoiceOrder";
 import { ChatWidget } from "@/components/chat/ChatWidget";
 import { Cursor } from "@/components/layout/Cursor";
 import { Footer } from "@/components/layout/Footer";
@@ -14,6 +15,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
       <main id="main">{children}</main>
       <Footer />
       <ChatWidget />
+      <VoiceOrder />
       <Motion />
       <Cursor />
     </>

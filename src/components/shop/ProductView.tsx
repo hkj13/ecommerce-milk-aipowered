@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import { ProductAsk } from "@/components/ai/ProductAsk";
 import { ProductCard, stockState } from "@/components/shop/ProductCard";
 import { ProductThumb } from "@/components/shop/ProductArt";
 import { toast } from "@/components/ui/Toaster";
@@ -9,6 +10,7 @@ import { AiBadge, Empty, Stepper } from "@/components/ui/bits";
 import { CalendarIcon, CheckIcon, ClockIcon, LeafIcon, RepeatIcon, StarIcon, ThermoIcon, TruckIcon } from "@/components/ui/icons";
 import { categoryLabel, productBySlug } from "@/data/products";
 import { PAIRS, sentiment, summariseFeedback } from "@/lib/ai";
+import { substituteFor } from "@/lib/ai-plus";
 import { addReview, addToCart, markViewed } from "@/lib/actions";
 import { addDays, cls, fmtDate, fmtDay, money } from "@/lib/format";
 import { useCatalogue, useDB, useSession } from "@/lib/store";
@@ -135,6 +137,16 @@ export function ProductView({ slug }: { slug: string }) {
               )}
             </div>
 
+            {out && substituteFor(p.slug, all) && (
+              <Link href={`/shop/${substituteFor(p.slug, all)!.slug}`} className="mt-5 flex items-center justify-between gap-3 rounded-2xl border border-butter/50 bg-butter/10 p-4 text-sm">
+                <span>
+                  <span className="block font-semibold text-butter-ink">AI suggests a substitute</span>
+                  Out today. {substituteFor(p.slug, all)!.name} is in stock and customers often choose it instead.
+                </span>
+                <span className="font-semibold text-pasture">View →</span>
+              </Link>
+            )}
+
             <ul className="mt-8 grid gap-3 rounded-[22px] bg-cream p-5 text-[0.92rem] sm:grid-cols-2">
               <li className="flex gap-3">
                 <TruckIcon className="flex-none text-pasture" />
@@ -219,6 +231,7 @@ export function ProductView({ slug }: { slug: string }) {
                 )}
               </div>
             </div>
+            <ProductAsk product={p} />
           </div>
         </div>
 
